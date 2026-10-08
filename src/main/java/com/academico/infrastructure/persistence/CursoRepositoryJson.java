@@ -2,6 +2,7 @@
 package com.academico.infrastructure.persistence;
 
 import com.academico.domain.model.Curso;
+import com.academico.domain.repository.CursoRepository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -10,28 +11,31 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursoRepositoryJson {
+public class CursoRepositoryJson implements CursoRepository {
 
     private final String archivo = "data/cursos.json";
     private final Gson gson = new Gson();
 
-    // Listar todos los cursos
+    @Override
     public List<Curso> listar() {
 
         try (Reader reader = new FileReader(archivo)) {
 
-            Type tipo = new TypeToken<List<Curso>>() {}.getType();
+            Type tipo =
+                    new TypeToken<List<Curso>>() {}.getType();
 
             List<Curso> cursos = gson.fromJson(reader, tipo);
 
-            return cursos != null ? cursos : new ArrayList<>();
+            return cursos != null
+                    ? cursos
+                    : new ArrayList<>();
 
         } catch (IOException e) {
             return new ArrayList<>();
         }
     }
 
-    // Guardar lista de cursos
+    @Override
     public void guardar(List<Curso> cursos) {
 
         try (Writer writer = new FileWriter(archivo)) {
@@ -43,3 +47,4 @@ public class CursoRepositoryJson {
         }
     }
 }
+

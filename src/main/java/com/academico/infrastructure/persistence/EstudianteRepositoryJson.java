@@ -1,8 +1,8 @@
 
 package com.academico.infrastructure.persistence;
 
-import com.academico.domain.model.Curso;
-import com.academico.domain.repository.CursoRepository;
+import com.academico.domain.model.Estudiante;
+import com.academico.domain.repository.EstudianteRepository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -11,38 +11,40 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursoRepositoryJson implements CursoRepository {
+public class EstudianteRepositoryJson implements EstudianteRepository {
 
-    private final String archivo = "data/cursos.json";
+    private final String archivo = "data/estudiantes.json";
     private final Gson gson = new Gson();
 
-    // Listar todos los cursos
     @Override
-    public List<Curso> listar() {
+    public List<Estudiante> listar() {
 
         try (Reader reader = new FileReader(archivo)) {
 
-            Type tipo = new TypeToken<List<Curso>>() {}.getType();
+            Type tipo =
+                    new TypeToken<List<Estudiante>>() {}.getType();
 
-            List<Curso> cursos = gson.fromJson(reader, tipo);
+            List<Estudiante> estudiantes =
+                    gson.fromJson(reader, tipo);
 
-            return cursos != null ? cursos : new ArrayList<>();
+            return estudiantes != null
+                    ? estudiantes
+                    : new ArrayList<>();
 
         } catch (IOException e) {
             return new ArrayList<>();
         }
     }
 
-    // Guardar lista de cursos
     @Override
-    public void guardar(List<Curso> cursos) {
+    public void guardar(List<Estudiante> estudiantes) {
 
         try (Writer writer = new FileWriter(archivo)) {
 
-            gson.toJson(cursos, writer);
+            gson.toJson(estudiantes, writer);
 
         } catch (IOException e) {
-            System.out.println("Error al guardar cursos.");
+            System.out.println("Error al guardar estudiantes.");
         }
     }
 }
