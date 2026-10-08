@@ -1,26 +1,61 @@
+
 package com.academico;
+
+import com.academico.application.EstudianteService;
+import com.academico.application.CursoService;
+
+import com.academico.domain.repository.EstudianteRepository;
+import com.academico.domain.repository.CursoRepository;
+
 import com.academico.infrastructure.persistence.EstudianteRepositoryJson;
+import com.academico.infrastructure.persistence.CursoRepositoryJson;
+
 import com.academico.presentation.EstudianteUI;
 import com.academico.presentation.CursoUI;
-//agregar
-import com.academico.application.EstudianteService;
-import com.academico.domain.repository.EstudianteRepository;
 
-import  java.util.Scanner;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        //agregar
-        // infraestructura
-        EstudianteRepository repository=new EstudianteRepositoryJson();
 
-        //aplicacion
-        EstudianteService service=new EstudianteService(repository);
+        // ====================================
+        // CASO 1: GESTION DE ESTUDIANTES
+        // ====================================
 
-        // presentacion
-        EstudianteUI estudianteUI=new EstudianteUI(service);
+        // Infraestructura
+        EstudianteRepository estudianteRepository =
+                new EstudianteRepositoryJson();
 
+        // Aplicacion
+        EstudianteService estudianteService =
+                new EstudianteService(estudianteRepository);
+
+        // Presentacion
+        EstudianteUI estudianteUI =
+                new EstudianteUI(estudianteService);
+
+
+        // ====================================
+        // CASO 2: GESTION DE CURSOS
+        // ====================================
+
+        // Infraestructura
+        CursoRepository cursoRepository =
+                new CursoRepositoryJson();
+
+        // Aplicacion
+        CursoService cursoService =
+                new CursoService(cursoRepository);
+
+        // Presentacion
+        CursoUI cursoUI =
+                new CursoUI(cursoService);
+
+
+        // ====================================
+        // MENU PRINCIPAL
+        // ====================================
 
         Scanner sc = new Scanner(System.in);
 
@@ -28,13 +63,18 @@ public class Main {
 
         do {
 
-            System.out.println("\n=== SISTEMA DE GESTIÓN ACADÉMICA ===");
+            System.out.println(
+                "\n=== SISTEMA DE GESTION ACADEMICA ==="
+            );
+
             System.out.println("1. Gestionar estudiantes");
             System.out.println("2. Gestionar cursos");
             System.out.println("0. Salir");
-            System.out.print("Seleccione una opción: ");
+
+            System.out.print("Seleccione una opcion: ");
 
             opcion = sc.nextInt();
+            sc.nextLine();
 
             switch (opcion) {
 
@@ -43,7 +83,7 @@ public class Main {
                     break;
 
                 case 2:
-                   // CursoUI.mostrarMenu(sc);
+                    cursoUI.mostrarMenu(sc);
                     break;
 
                 case 0:
@@ -51,7 +91,8 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opción no válida.");
+                    System.out.println("Opcion no valida.");
+                    break;
             }
 
         } while (opcion != 0);
