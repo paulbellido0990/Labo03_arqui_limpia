@@ -1,7 +1,8 @@
+
 package com.academico.application;
 
 import com.academico.domain.model.Curso;
-import com.academico.infrastructure.CursoRepository;
+import com.academico.domain.repository.CursoRepository;
 
 import java.util.List;
 
@@ -9,10 +10,12 @@ public class CursoService {
 
     private final CursoRepository repository;
 
-    public CursoService() {
-        repository = new CursoRepository();
+    // Inyeccion de dependencias por constructor
+    public CursoService(CursoRepository repository) {
+        this.repository = repository;
     }
 
+    // Registrar un nuevo curso
     public void registrar(Curso curso) {
 
         List<Curso> cursos = repository.listar();
@@ -22,10 +25,12 @@ public class CursoService {
         repository.guardar(cursos);
     }
 
+    // Listar todos los cursos
     public List<Curso> listar() {
         return repository.listar();
     }
 
+    // Actualizar un curso existente
     public boolean actualizar(Curso curso) {
 
         List<Curso> cursos = repository.listar();
@@ -46,11 +51,14 @@ public class CursoService {
         return false;
     }
 
+    // Eliminar un curso por ID
     public boolean eliminar(int id) {
 
         List<Curso> cursos = repository.listar();
 
-        boolean eliminado = cursos.removeIf(c -> c.getId() == id);
+        boolean eliminado = cursos.removeIf(
+            c -> c.getId() == id
+        );
 
         if (eliminado) {
             repository.guardar(cursos);
