@@ -1,3 +1,4 @@
+
 package com.academico.presentation;
 
 import com.academico.domain.model.Curso;
@@ -7,15 +8,18 @@ import java.util.Scanner;
 
 public class CursoUI {
 
-    private static final CursoService service =
-            new CursoService();
+    private final CursoService service;
 
-    public static void mostrarMenu(Scanner sc) {
+    // Inyeccion de dependencias por constructor
+    public CursoUI(CursoService service) {
+        this.service = service;
+    }
+
+    public void mostrarMenu(Scanner sc) {
 
         int opcion;
 
         do {
-
             System.out.println("\n--- CURSOS ---");
             System.out.println("1. Registrar");
             System.out.println("2. Listar");
@@ -39,6 +43,7 @@ public class CursoUI {
 
                     System.out.print("Créditos: ");
                     int creditos = sc.nextInt();
+                    sc.nextLine();
 
                     service.registrar(
                             new Curso(id, nombre, creditos)
@@ -51,8 +56,8 @@ public class CursoUI {
                     service.listar().forEach(c ->
                             System.out.println(
                                     c.getId() + " - " +
-                                            c.getNombre() + " - " +
-                                            c.getCreditos() + " créditos"
+                                    c.getNombre() + " - " +
+                                    c.getCreditos() + " créditos"
                             )
                     );
                     break;
@@ -67,6 +72,7 @@ public class CursoUI {
 
                     System.out.print("Nuevos créditos: ");
                     int creditosAct = sc.nextInt();
+                    sc.nextLine();
 
                     boolean actualizado = service.actualizar(
                             new Curso(
@@ -86,6 +92,7 @@ public class CursoUI {
                 case 4:
                     System.out.print("ID a eliminar: ");
                     int idEliminar = sc.nextInt();
+                    sc.nextLine();
 
                     boolean eliminado =
                             service.eliminar(idEliminar);
@@ -95,6 +102,14 @@ public class CursoUI {
                                     ? "Curso eliminado."
                                     : "Curso no encontrado."
                     );
+                    break;
+
+                case 0:
+                    System.out.println("Regresando al menu principal...");
+                    break;
+
+                default:
+                    System.out.println("Opcion no valida.");
                     break;
             }
 
